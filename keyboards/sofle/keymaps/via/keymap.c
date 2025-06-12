@@ -18,7 +18,7 @@ enum custom_keycodes {
 };
 
 const uint16_t PROGMEM esc[] = {KC_GRV, KC_1, COMBO_END};
-const uint16_t PROGMEM func[] = {KC_LGUI, KC_LALT, KC_LCTL, COMBO_END};
+const uint16_t PROGMEM func[] = {KC_LGUI, KC_LALT, LT(_Syntax, KC_LCTL), COMBO_END};
 
 
 combo_t key_combos[] = {
