@@ -2,6 +2,13 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "quantum.h"
 
+static bool tabbing = false;
+static bool holding_ctrl = false;
+static bool holding_alt = false;
+static uint16_t tabtimer;
+#define TABBING_APP_TIMER 600
+#define TABBING_TAB_TIMER 750
+
 #ifdef SWAP_HANDS_ENABLE
 
 __attribute__((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRIX_COLS] =
@@ -106,25 +113,96 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     if (!encoder_update_user(index, clockwise)) {
         return false;
     }
-    if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
-            tap_code(KC_VOLD);
+    switch (get_highest_layer(layer_state)) {
+    case 1:
+        if (index == 1) {
+            if (clockwise) {
+                tabtimer = timer_read();
+                if(!tabbing) {
+                    register_code(KC_LCTL);
+                    tabbing = true;
+                    holding_ctrl = true;
+                    holding_alt = false;
+                }
+                tap_code(KC_TAB);
+            } else {
+                tabtimer = timer_read();
+                if(!tabbing) {
+                    register_code(KC_LCTL);
+                    holding_ctrl = true;
+                    holding_alt = false;
+                    tabbing = true;
+                }
+                register_code(KC_LSFT);
+                tap_code(KC_TAB);
+                unregister_code(KC_LSFT);
+            }
+        } else if (index == 0) {
+            if (clockwise) {
+                tabtimer = timer_read();
+                if(!tabbing) {
+                    register_code(KC_LALT);
+                    holding_alt = true;
+                    holding_ctrl = false;                    
+                    tabbing = true;
+                }
+                tap_code(KC_TAB);
+            } else {
+                tabtimer = timer_read();
+                if(!tabbing) {
+                    register_code(KC_LALT);
+                    holding_alt = true;
+                    holding_ctrl = false;
+                    tabbing = true;
+                }
+                register_code(KC_LSFT);
+                tap_code(KC_TAB);
+                unregister_code(KC_LSFT);
+            }
         }
-    } else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_PGDN);
-            tap_code(KC_PGDN);
-            tap_code(KC_PGDN);
-
-
-        } else {
-            tap_code(KC_PGUP);
-            tap_code(KC_PGUP);
-            tap_code(KC_PGDN);
+        break;
+    default:
+        if (index == 1) { 
+            if (clockwise) {
+                tap_code(KC_VOLU);
+            } else {
+                tap_code(KC_VOLD);
+            }
+        } else if (index == 0) {
+            if (clockwise) {
+                tap_code(MS_WHLD);
+                tap_code(MS_WHLD);
+            } else {
+                tap_code(MS_WHLU);
+                tap_code(MS_WHLU);
+            }
         }
+        break;
     }
     return true;
+}
+
+void matrix_scan_user(void) {
+    if(tabbing) {
+        uint16_t timeout = 0;
+        
+        if (holding_ctrl) {
+            timeout = TABBING_TAB_TIMER;
+        } else if (holding_alt) {
+            timeout = TABBING_APP_TIMER;
+        }
+        
+        if (timer_elapsed(tabtimer) > timeout) {
+            if (holding_ctrl) {
+                unregister_code(KC_LCTL);
+                holding_ctrl = false;
+            }
+            if (holding_alt) {
+                unregister_code(KC_LALT);
+                holding_alt = false;
+            }
+            tabbing = false;
+        }
+    }
 }
 #endif
