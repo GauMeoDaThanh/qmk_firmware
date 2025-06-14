@@ -115,7 +115,7 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     }
     switch (get_highest_layer(layer_state)) {
     case 1:
-        if (index == 1) {
+        if (index == 0) {
             if (clockwise) {
                 tabtimer = timer_read();
                 if(!tabbing) {
@@ -137,7 +137,7 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
                 tap_code(KC_TAB);
                 unregister_code(KC_LSFT);
             }
-        } else if (index == 0) {
+        } else if (index == 1) {
             if (clockwise) {
                 tabtimer = timer_read();
                 if(!tabbing) {
