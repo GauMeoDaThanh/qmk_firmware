@@ -84,14 +84,16 @@ void print_status_narrow(void) {
             oled_write_P(PSTR("Nav\n"), false);
             break;
         case 3:
-            oled_write_P(PSTR("Syntax\n"), false);
+            oled_write_P(PSTR("Spec\n"), false);
             break;
         default:
+            oled_write_P(PSTR("\n"), false);
             break;
     }
     oled_write_P(PSTR("\n\n"), false);
     led_t led_usb_state = host_keyboard_led_state();
-    oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
+    oled_write_ln_P(PSTR("CPSLP\n"), led_usb_state.caps_lock);
+    oled_write_ln_P(PSTR("NUM"), led_usb_state.num_lock);
 }
 
 bool oled_task_kb(void) {
@@ -162,13 +164,13 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
         }
         break;
     default:
-        if (index == 1) { 
+        if (index == 0) { 
             if (clockwise) {
                 tap_code(KC_VOLU);
             } else {
                 tap_code(KC_VOLD);
             }
-        } else if (index == 0) {
+        } else if (index == 1) {
             if (clockwise) {
                 tap_code(MS_WHLD);
                 tap_code(MS_WHLD);
