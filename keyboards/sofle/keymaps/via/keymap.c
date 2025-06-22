@@ -14,7 +14,11 @@ enum custom_keycodes {
     KC_PRVWD = QK_USER,
     KC_NXTWD,
     KC_LSTRT,
-    KC_LEND
+    KC_LEND,
+    KC_WDESK_L,  // Win+Ctrl+Left (switch virtual desktop left)
+    KC_WDESK_R,  // Win+Ctrl+Right (switch virtual desktop right)
+    KC_WTAB,     // Win+Tab (task view)
+    KC_WNEWDESK  // Win+Ctrl+D (create new virtual desktop)
 };
 
 const uint16_t PROGMEM esc[] = {KC_GRV, KC_1, COMBO_END};
@@ -67,9 +71,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `----------------------------------'           '------''---------------------------'
  */
 [_Nav] = LAYOUT(
-  _______, S(KC_Q) , S(KC_W) , S(KC_E) , S(KC_R) , _______,                           _______,  _______  , _______,  _______ ,  _______ ,_______,
+  _______, S(KC_Q) , S(KC_W) , S(KC_E) , S(KC_R) , _______,                           KC_WNEWDESK,KC_WDESK_L, KC_WTAB,  KC_WDESK_R,  _______ ,_______,
   _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PRVWD,   KC_UP, KC_NXTWD,C(KC_BSPC), KC_BSPC,
-  C(KC_Y), KC_LALT,  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_BSPC,
+  C(KC_Y), C(KC_A),  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_BSPC,
   _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,  _______,       _______,  XXXXXXX, KC_LSTRT, XXXXXXX, KC_LEND,   XXXXXXX, _______,
                          _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
 ),
@@ -167,6 +171,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 } else {
                     unregister_code(KC_END);
                 }
+            }
+            break;
+        case KC_WDESK_L:
+            if (record->event.pressed) {
+                register_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                register_code(KC_LEFT);
+            } else {
+                unregister_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                unregister_code(KC_LEFT);
+            }
+            break;
+        case KC_WDESK_R:
+            if (record->event.pressed) {
+                register_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                register_code(KC_RIGHT);
+            } else {
+                unregister_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                unregister_code(KC_RIGHT);
+            }
+            break;
+        case KC_WTAB:
+            if (record->event.pressed) {
+                register_mods(mod_config(MOD_LGUI));
+                register_code(KC_TAB);
+            } else {
+                unregister_mods(mod_config(MOD_LGUI));
+                unregister_code(KC_TAB);
+            }
+            break;
+        case KC_WNEWDESK:
+            if (record->event.pressed) {
+                register_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                register_code(KC_D);
+            } else {
+                unregister_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                unregister_code(KC_D);
             }
             break;
     }
