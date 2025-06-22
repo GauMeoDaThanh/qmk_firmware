@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `----------------------------------'           '------''---------------------------'
  */
 [_Nav] = LAYOUT(
-  _______, S(KC_Q) , S(KC_W) , S(KC_E) , S(KC_R) , _______,                           KC_WNEWDESK,KC_WDESK_L, KC_WTAB,  KC_WDESK_R,  KC_WDELDESK ,_______,
+  _______, S(KC_Q) , S(KC_W) , S(KC_E) , S(KC_R) , _______,                           KC_WNEWDESK,KC_WDESK_L, KC_WTAB,  KC_WDESK_R,  KC_WDELDESK ,A(KC_F4),
   _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PRVWD,   KC_UP, KC_NXTWD,C(KC_BSPC), KC_BSPC,
   C(KC_Y), C(KC_A),  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_BSPC,
   _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,  _______,       _______,  XXXXXXX, KC_LSTRT, XXXXXXX, KC_LEND,   XXXXXXX, _______,
