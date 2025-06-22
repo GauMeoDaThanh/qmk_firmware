@@ -18,7 +18,8 @@ enum custom_keycodes {
     KC_WDESK_L,  // Win+Ctrl+Left (switch virtual desktop left)
     KC_WDESK_R,  // Win+Ctrl+Right (switch virtual desktop right)
     KC_WTAB,     // Win+Tab (task view)
-    KC_WNEWDESK  // Win+Ctrl+D (create new virtual desktop)
+    KC_WNEWDESK,  // Win+Ctrl+D (create new virtual desktop)
+    KC_WDELDESK, // Win+Ctrl+F4 (delete current virtual desktop)
 };
 
 const uint16_t PROGMEM esc[] = {KC_GRV, KC_1, COMBO_END};
@@ -71,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `----------------------------------'           '------''---------------------------'
  */
 [_Nav] = LAYOUT(
-  _______, S(KC_Q) , S(KC_W) , S(KC_E) , S(KC_R) , _______,                           KC_WNEWDESK,KC_WDESK_L, KC_WTAB,  KC_WDESK_R,  _______ ,_______,
+  _______, S(KC_Q) , S(KC_W) , S(KC_E) , S(KC_R) , _______,                           KC_WNEWDESK,KC_WDESK_L, KC_WTAB,  KC_WDESK_R,  KC_WDELDESK ,_______,
   _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PRVWD,   KC_UP, KC_NXTWD,C(KC_BSPC), KC_BSPC,
   C(KC_Y), C(KC_A),  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_BSPC,
   _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,  _______,       _______,  XXXXXXX, KC_LSTRT, XXXXXXX, KC_LEND,   XXXXXXX, _______,
@@ -209,6 +210,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_D);
             }
             break;
+        case KC_WDELDESK:
+            if (record->event.pressed) {
+                register_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                register_code(KC_F4);
+            } else {
+                unregister_mods(mod_config(MOD_LGUI | MOD_LCTL));
+                unregister_code(KC_F4);
+            }
     }
     return true;
 }
