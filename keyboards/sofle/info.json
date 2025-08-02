@@ -41,8 +41,8 @@
         "sleep": true,
         "animations": {
             "breathing": false,
-            "rainbow_mood": true,
-            "rainbow_swirl": false,
+            "rainbow_mood": false,
+            "rainbow_swirl": true,
             "snake": false,
             "knight": false,
             "christmas": false,
