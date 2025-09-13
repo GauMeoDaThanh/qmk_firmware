@@ -42,9 +42,9 @@
         "animations": {
             "breathing": false,
             "rainbow_mood": false,
-            "rainbow_swirl": true,
+            "rainbow_swirl": false,
             "snake": false,
-            "knight": false,
+            "knight": true,
             "christmas": false,
             "static_gradient": false,
             "rgb_test": false,
