@@ -41,10 +41,10 @@
         "sleep": true,
         "animations": {
             "breathing": false,
-            "rainbow_mood": false,
+            "rainbow_mood": true,
             "rainbow_swirl": false,
             "snake": false,
-            "knight": true,
+            "knight": false,
             "christmas": false,
             "static_gradient": false,
             "rgb_test": false,
